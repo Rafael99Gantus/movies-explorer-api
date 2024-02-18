@@ -2,6 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const { errors } = require("celebrate");
+const helmet = require("helmet");
 
 const rateLimit = require("express-rate-limit");
 const NotFoundError = require("./utils/NotFoundError");
@@ -27,6 +28,9 @@ const ERROR_404 = "Страница не найдена, некорректны�
 const { PORT = 3000 } = process.env;
 
 const app = express();
+
+app.use(helmet());
+
 // app.use(cors);
 app.use((req, res, next) => {
   const { origin } = req.headers;
