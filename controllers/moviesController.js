@@ -8,7 +8,7 @@ const ERROR_404 = "Карточка не найдена";
 
 module.exports.getMovies = async (req, res, next) => {
   try {
-    const cards = await Movies.find({});
+    const cards = await Movies.find({ owner: req.user._id });
     res.status(http2.constants.HTTP_STATUS_OK).send(cards);
   } catch (err) {
     next(err);

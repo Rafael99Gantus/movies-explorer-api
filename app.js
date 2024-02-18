@@ -2,15 +2,25 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const { errors } = require("celebrate");
+
+const rateLimit = require("express-rate-limit");
 const NotFoundError = require("./utils/NotFoundError");
 // eslint-disable-next-line import/no-extraneous-dependencies
 require("dotenv").config();
-const { routerUsers, routerMovies } = require("./routes/index");
-const { postUser, login } = require("./controllers/userController"); //+
+
+const {
+  routerUsers,
+  routerMovies,
+  postUser,
+  login,
+} = require("./routes/index");
+
+// const { postUser, login } = require("./controllers/userController"); //+
 const errorHandler = require("./middlewares/error"); //+
 const { signUpValidation, signInValidation } = require("./middlewares/celebrate"); //+
 const { requestLogger, errorLogger } = require("./middlewares/logger"); //+
 const allowedCors = require("./middlewares/cors"); //+
+// const limiter = require("./middlewares/rateLimit");
 
 const ERROR_404 = "Страница не найдена, некорректный запрос";
 
@@ -51,6 +61,14 @@ mongoose.connect("mongodb://127.0.0.1:27017/bitfilmsdb")
     console.error("Ошибка подключения:", err.message);
   });
 
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Много запросов для этого IP, повторите попытку через час",
+  headers: true,
+});
+
+app.use(limiter);
 app.post("/signin", signInValidation, login);
 app.post("/signup", signUpValidation, postUser);
 
