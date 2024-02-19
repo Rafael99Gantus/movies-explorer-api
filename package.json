@@ -46,9 +46,10 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.55.0",
+    "eslint": "^8.2.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.29.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2",
     "jest": "^27.5.1",
     "nodemon": "^3.0.2"
   }

@@ -4,26 +4,22 @@ const mongoose = require("mongoose");
 const { errors } = require("celebrate");
 const helmet = require("helmet");
 
-const rateLimit = require("express-rate-limit");
-const NotFoundError = require("./utils/NotFoundError");
+// const rateLimit = require("express-rate-limit");
+// const NotFoundError = require("./utils/NotFoundError");
 // eslint-disable-next-line import/no-extraneous-dependencies
 require("dotenv").config();
 
-const {
-  routerUsers,
-  routerMovies,
-  postUser,
-  login,
-} = require("./routes/index");
+const router = require("./routes/index");
 
 // const { postUser, login } = require("./controllers/userController"); //+
 const errorHandler = require("./middlewares/error"); //+
-const { signUpValidation, signInValidation } = require("./middlewares/celebrate"); //+
+// const { signUpValidation, signInValidation } = require("./middlewares/celebrate"); //+
 const { requestLogger, errorLogger } = require("./middlewares/logger"); //+
 const allowedCors = require("./middlewares/cors"); //+
-// const limiter = require("./middlewares/rateLimit");
+const { limiter } = require("./middlewares/rateLimit");
+const MONGO_URL = require("./utils/config");
 
-const ERROR_404 = "Страница не найдена, некорректный запрос";
+// const ERROR_404 = "Страница не найдена, некорректный запрос";
 
 const { PORT = 3000 } = process.env;
 
@@ -57,7 +53,7 @@ app.get("/crash-test", () => {
   }, 0);
 });
 
-mongoose.connect("mongodb://127.0.0.1:27017/bitfilmsdb")
+mongoose.connect(MONGO_URL)
   .then(() => {
     console.log("Подключение установлено");
   })
@@ -65,23 +61,23 @@ mongoose.connect("mongodb://127.0.0.1:27017/bitfilmsdb")
     console.error("Ошибка подключения:", err.message);
   });
 
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: "Много запросов для этого IP, повторите попытку через час",
-  headers: true,
-});
+// const limiter = rateLimit({
+//   max: 100,
+//   windowMs: 60 * 60 * 1000,
+//   message: "Много запросов для этого IP, повторите попытку через час",
+//   headers: true,
+// });
 
 app.use(limiter);
-app.post("/signin", signInValidation, login);
-app.post("/signup", signUpValidation, postUser);
+// app.post("/signin", signInValidation, login);
+// app.post("/signup", signUpValidation, postUser);
 
-app.use("/users", routerUsers);
-app.use("/movies", routerMovies);
-app.use("*", (req, res, next) => {
-  next(new NotFoundError(`${ERROR_404}`));
-});
-
+// app.use("/users", routerUsers);
+// app.use("/movies", routerMovies);
+// app.use("*", (req, res, next) => {
+//   next(new NotFoundError(`${ERROR_404}`));
+// });
+app.use(router);
 app.use(errorLogger); // логгер ошибок
 
 app.use(errors()); // обработчик ошибок celebrate
