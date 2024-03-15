@@ -1,8 +1,8 @@
 const allowedCors = [
-  "http://mesto.rafael.nomoredomainsmonster.ru",
-  "https://mesto.rafael.nomoredomainsmonster.ru",
-  "http://api.mesto.rafael.nomoredomainsmonster.ru",
-  "https://api.mesto.rafael.nomoredomainsmonster.ru",
+  "http://movie.rafael.nomoredomainsmonster.ru",
+  "https://movie.rafael.nomoredomainsmonster.ru",
+  "http://api.movie.rafael.nomoredomainsmonster.ru",
+  "https://api.movie.rafael.nomoredomainsmonster.ru",
   "http://localhost:3000",
   "https://localhost:3000",
   "http://127.0.0.1:3000",
