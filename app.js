@@ -1,42 +1,34 @@
 /* eslint-disable max-len */
 const express = require("express");
 const mongoose = require("mongoose");
-const { errors } = require("celebrate");
+// const { errors } = require("celebrate");
 const helmet = require("helmet");
 const cors = require("cors");
 
-// const rateLimit = require("express-rate-limit");
-// const NotFoundError = require("./utils/NotFoundError");
-// eslint-disable-next-line import/no-extraneous-dependencies
 require("dotenv").config();
 
 const router = require("./routes/index");
 
-// const { postUser, login } = require("./controllers/userController"); //+
 const errorHandler = require("./middlewares/error"); //+
-// const { signUpValidation, signInValidation } = require("./middlewares/celebrate"); //+
 const { requestLogger, errorLogger } = require("./middlewares/logger"); //+
-// const allowedCors = require("./middlewares/cors"); //+
 const { limiter } = require("./middlewares/rateLimit");
 const MONGO_URL = require("./utils/config");
 
-// const ERROR_404 = "Страница не найдена, некорректный запрос";
-
 const { PORT = 3000 } = process.env;
 const app = express();
-// const options = {
-//   origin: [
-//     "http://movie.rafael.nomoredomainsmonster.ru",
-//     "https://movie.rafael.nomoredomainsmonster.ru",
-//     "http://localhost:3000",
-//   ],
-//   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-//   preflightContinue: false,
-//   optionsSuccessStatus: 204,
-//   allowedHeaders: ["Content-Type", "origin", "Authorization"],
-//   credentials: true,
-// };
-// app.use(cors(options));
+const options = {
+  origin: [
+    "http://movie.rafael.nomoredomainsmonster.ru",
+    "https://movie.rafael.nomoredomainsmonster.ru",
+    "http://localhost:3000",
+  ],
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ["Content-Type", "origin", "Authorization"],
+  credentials: true,
+};
+app.use(cors(options));
 app.use(helmet());
 
 // app.use(cors);
@@ -93,7 +85,7 @@ app.use(limiter);
 app.use(router);
 app.use(errorLogger); // логгер ошибок
 
-app.use(errors()); // обработчик ошибок celebrate
+// app.use(errors()); // обработчик ошибок celebrate
 
 app.use(errorHandler);
 
