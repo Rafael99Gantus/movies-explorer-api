@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const { errors } = require("celebrate");
 const helmet = require("helmet");
+const cors = require("cors");
 
 // const rateLimit = require("express-rate-limit");
 // const NotFoundError = require("./utils/NotFoundError");
@@ -15,7 +16,7 @@ const router = require("./routes/index");
 const errorHandler = require("./middlewares/error"); //+
 // const { signUpValidation, signInValidation } = require("./middlewares/celebrate"); //+
 const { requestLogger, errorLogger } = require("./middlewares/logger"); //+
-const allowedCors = require("./middlewares/cors"); //+
+// const allowedCors = require("./middlewares/cors"); //+
 const { limiter } = require("./middlewares/rateLimit");
 const MONGO_URL = require("./utils/config");
 
@@ -28,22 +29,54 @@ const app = express();
 app.use(helmet());
 
 // app.use(cors);
-app.use((req, res, next) => {
-  const { origin } = req.headers;
-  const { method } = req;
-  const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
-  const requestHeaders = req.headers["access-control-request-headers"];
-  if (allowedCors.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-  }
-  if (method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", DEFAULT_ALLOWED_METHODS);
-    res.header("Access-Control-Allow-Headers", requestHeaders);
-    return res.end();
-  }
+// app.use((req, res, next) => {
+//   const { origin } = req.headers;
+//   const { method } = req;
+//   const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
+//   const requestHeaders = req.headers["access-control-request-headers"];
+//   if (allowedCors.includes(origin)) {
+//     res.header("Access-Control-Allow-Origin", origin);
+//   }
+//   if (method === "OPTIONS") {
+//     res.header("Access-Control-Allow-Methods", DEFAULT_ALLOWED_METHODS);
+//     res.header("Access-Control-Allow-Headers", requestHeaders);
+//     return res.end();
+//   }
 
-  return next();
-});
+//   return next();
+// });
+
+const options = {
+  origin: [
+    "http://movie.rafael.nomoredomainsmonster.ru",
+    "https://movie.rafael.nomoredomainsmonster.ru",
+    "http://api.movie.rafael.nomoredomainsmonster.ru",
+    "https://api.movie.rafael.nomoredomainsmonster.ru",
+    "http://localhost:3000",
+    "https://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://127.0.0.1:3000",
+    "http://127.0.0.1:27017",
+    "https://127.0.0.1:27017",
+    "http://localhost:5173",
+    "https://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://127.0.0.1:5173",
+    "http://84.201.154.246",
+    "https://84.201.154.246",
+    "http://127.0.0.1:80",
+    "https://127.0.0.1:80",
+    "*",
+  ],
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ["Content-Type", "origin", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(options));
+
 app.use(express.json());
 app.use(requestLogger);
 
