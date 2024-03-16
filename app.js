@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 const express = require("express");
 const mongoose = require("mongoose");
-// const { errors } = require("celebrate");
+const { errors } = require("celebrate");
 const helmet = require("helmet");
 const cors = require("cors");
 
@@ -9,7 +9,7 @@ require("dotenv").config();
 
 const router = require("./routes/index");
 
-const errorHandler = require("./middlewares/error"); //+
+// const errorHandler = require("./middlewares/error"); //+
 const { requestLogger, errorLogger } = require("./middlewares/logger"); //+
 const { limiter } = require("./middlewares/rateLimit");
 const MONGO_URL = require("./utils/config");
@@ -66,28 +66,13 @@ mongoose.connect(MONGO_URL)
     console.error("Ошибка подключения:", err.message);
   });
 
-// const limiter = rateLimit({
-//   max: 100,
-//   windowMs: 60 * 60 * 1000,
-//   message: "Много запросов для этого IP, повторите попытку через час",
-//   headers: true,
-// });
-
 app.use(limiter);
-// app.post("/signin", signInValidation, login);
-// app.post("/signup", signUpValidation, postUser);
-
-// app.use("/users", routerUsers);
-// app.use("/movies", routerMovies);
-// app.use("*", (req, res, next) => {
-//   next(new NotFoundError(`${ERROR_404}`));
-// });
 app.use(router);
 app.use(errorLogger); // логгер ошибок
 
-// app.use(errors()); // обработчик ошибок celebrate
+app.use(errors()); // обработчик ошибок celebrate
 
-app.use(errorHandler);
+// app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Ссылка на сервер: ${PORT}`);
