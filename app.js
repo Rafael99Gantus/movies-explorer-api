@@ -24,35 +24,19 @@ const MONGO_URL = require("./utils/config");
 
 const { PORT = 3000 } = process.env;
 const app = express();
-const options = {
-  origin: [
-    "http://movie.rafael.nomoredomainsmonster.ru",
-    "https://movie.rafael.nomoredomainsmonster.ru",
-    "http://api.movie.rafael.nomoredomainsmonster.ru",
-    "https://api.movie.rafael.nomoredomainsmonster.ru",
-    "http://localhost:3000",
-    "https://localhost:3000",
-    "http://127.0.0.1:3000",
-    "https://127.0.0.1:3000",
-    "http://127.0.0.1:27017",
-    "https://127.0.0.1:27017",
-    "http://localhost:5173",
-    "https://localhost:5173",
-    "http://127.0.0.1:5173",
-    "https://127.0.0.1:5173",
-    "http://84.201.154.246",
-    "https://84.201.154.246",
-    "http://127.0.0.1:80",
-    "https://127.0.0.1:80",
-    "*",
-  ],
-  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  allowedHeaders: ["Content-Type", "origin", "Authorization"],
-  credentials: true,
-};
-app.use(cors(options));
+// const options = {
+//   origin: [
+//     "http://movie.rafael.nomoredomainsmonster.ru",
+//     "https://movie.rafael.nomoredomainsmonster.ru",
+//     "http://localhost:3000",
+//   ],
+//   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+//   preflightContinue: false,
+//   optionsSuccessStatus: 204,
+//   allowedHeaders: ["Content-Type", "origin", "Authorization"],
+//   credentials: true,
+// };
+// app.use(cors(options));
 app.use(helmet());
 
 // app.use(cors);
@@ -72,8 +56,6 @@ app.use(helmet());
 
 //   return next();
 // });
-
-
 
 app.use(express.json());
 app.use(requestLogger);
