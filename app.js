@@ -70,7 +70,7 @@ app.use(limiter);
 app.use(router);
 app.use(errorLogger); // логгер ошибок
 
-app.use(errors()); // обработчик ошибок celebrate
+// app.use(errors()); // обработчик ошибок celebrate
 
 app.use(errorHandler);
 
