@@ -54,8 +54,9 @@ module.exports.postMovies = async (req, res, next) => {
     nameEN,
     thumbnail,
     movieId,
+    owner,
   } = req.body;
-  const owner = req.user.userId;
+  // const owner = req.user.userId;
   console.log(owner);
   Movies
     .create({
