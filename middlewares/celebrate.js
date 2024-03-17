@@ -49,6 +49,6 @@ module.exports.postMovieValidation = celebrate({
 
 module.exports.moviesIdValidation = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    movieId: Joi.string().required().hex().length(24),
   }),
 });
