@@ -34,11 +34,48 @@ module.exports.deleteMovies = async (req, res, next) => {
   }
 };
 
-exports.postMovies = async (req, res, next) => {
-  try {
-    await Movies.create({ owner: req.user._id, ...req.body })
-      .then((movie) => res.status(http2.constants.HTTP_STATUS_CREATED).send(movie));
-  } catch (err) {
-    next(err);
-  }
+// exports.postMovies = async (req, res, next) => {
+//   try {
+//     await Movies.create({ owner: req.user._id, ...req.body })
+//       .then((movie) => res.status(http2.constants.HTTP_STATUS_CREATED).send(movie));
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
+module.exports.createMovie = async (req, res, next) => {
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+  } = req.body;
+  const owner = req.user._id;
+  Movies
+    .create({
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailerLink,
+      nameRU,
+      nameEN,
+      thumbnail,
+      movieId,
+      owner,
+    })
+    .then((selectedMovie) => selectedMovie.populate("owner"))
+    .then((movie) => res.status(http2.constants.HTTP_STATUS_CREATED).send(movie))
+    .catch((err) => {
+      next(err);
+    });
 };
