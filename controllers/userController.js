@@ -68,7 +68,7 @@ module.exports.login = async (req, res, next) => {
       return next(new UnauthorizedError("Неверный пароль"));
     }
     const token = jwt.sign({ _id: user._id }, NODE_ENV === "production" ? JWT_SECRET : "Придумать ключ");
-    res.status(http2.constants.HTTP_STATUS_OK).send({ token });
+    res.status(http2.constants.HTTP_STATUS_OK).send({ token, id: user._id });
   } catch (err) {
     if (err.name === "ValidationError") {
       return next(new BadRequestError("Не удалось войти"));
