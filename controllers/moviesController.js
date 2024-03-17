@@ -54,10 +54,8 @@ module.exports.postMovies = async (req, res, next) => {
     nameEN,
     thumbnail,
     movieId,
-    owner,
   } = req.body;
   // const owner = req.user.userId;
-  console.log(owner);
   Movies
     .create({
       country,
@@ -71,7 +69,7 @@ module.exports.postMovies = async (req, res, next) => {
       nameEN,
       thumbnail,
       movieId,
-      owner,
+      owner: req.user._id,
     })
     .then((movie) => res.status(http2.constants.HTTP_STATUS_CREATED).send(movie))
     .catch((err) => {
