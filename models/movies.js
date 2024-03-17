@@ -47,10 +47,10 @@ const moviesSchema = new mongoose.Schema({
       message: "Ссылка неверного формата",
     },
   },
-  owner: {
-    type: String,
-    required: true,
-  },
+  // owner: {
+  //   type: String,
+  //   required: true,
+  // },
   movieId: {
     type: Number,
     required: true,
