@@ -34,47 +34,46 @@ module.exports.deleteMovies = async (req, res, next) => {
   }
 };
 
-module.exports.postMovies = (req, res, next) => {
-  Movies
-    .create({ owner: req.user._id, ...req.body })
-    .then((movie) => res.status(http2.constants.HTTP_STATUS_CREATED).send(movie))
-    .catch((err) => next(err));
-};
-
-// module.exports.postMovies = async (req, res, next) => {
-//   const {
-//     country,
-//     director,
-//     duration,
-//     year,
-//     description,
-//     image,
-//     trailerLink,
-//     nameRU,
-//     nameEN,
-//     thumbnail,
-//     movieId,
-//     owner,
-//   } = req.body;
-//   // const owner = req.user._id;
+// module.exports.postMovies = (req, res, next) => {
 //   Movies
-//     .create({
-//       country,
-//       director,
-//       duration,
-//       year,
-//       description,
-//       image,
-//       trailerLink,
-//       nameRU,
-//       nameEN,
-//       thumbnail,
-//       movieId,
-//       owner,
-//     })
-//     .then((selectedMovie) => selectedMovie.populate("owner"))
+//     .create({ owner: req.user._id, ...req.body })
 //     .then((movie) => res.status(http2.constants.HTTP_STATUS_CREATED).send(movie))
-//     .catch((err) => {
-//       next(err);
-//     });
+//     .catch((err) => next(err));
 // };
+
+module.exports.postMovies = async (req, res, next) => {
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+  } = req.body;
+  const owner = req.userId;
+  Movies
+    .create({
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailerLink,
+      nameRU,
+      nameEN,
+      thumbnail,
+      movieId,
+      owner,
+    })
+    .then((selectedMovie) => selectedMovie.populate("owner"))
+    .then((movie) => res.status(http2.constants.HTTP_STATUS_CREATED).send(movie))
+    .catch((err) => {
+      next(err);
+    });
+};
