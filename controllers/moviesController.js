@@ -34,38 +34,10 @@ module.exports.deleteMovies = async (req, res, next) => {
   }
 };
 
-module.exports.postMovies = async (req, res, next) => {
+exports.postMovies = async (req, res, next) => {
   try {
-    const owner = req.user._id;
-    const {
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailerLink,
-      nameRU,
-      nameEN,
-      thumbnail,
-      movieId,
-    } = req.body;
-    const newCard = await Movies.create({
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailerLink,
-      nameRU,
-      nameEN,
-      thumbnail,
-      movieId,
-      owner,
-    });
-
-    res.status(http2.constants.HTTP_STATUS_OK).send(newCard);
+    await Movies.create({ owner: req.user._id, ...req.body })
+      .then((movie) => res.status(http2.constants.HTTP_STATUS_CREATED).send(movie));
   } catch (err) {
     next(err);
   }
