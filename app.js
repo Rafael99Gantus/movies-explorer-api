@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 const express = require("express");
 const mongoose = require("mongoose");
-// const { errors } = require("celebrate");
+const { errors } = require("celebrate");
 const helmet = require("helmet");
 const cors = require("cors");
 
@@ -9,7 +9,7 @@ require("dotenv").config();
 
 const router = require("./routes/index");
 
-const errorHandler = require("./middlewares/error"); //+
+// const errorHandler = require("./middlewares/error"); //+
 const { requestLogger, errorLogger } = require("./middlewares/logger"); //+
 const { limiter } = require("./middlewares/rateLimit");
 const MONGO_URL = require("./utils/config");
@@ -70,9 +70,9 @@ app.use(limiter);
 app.use(router);
 app.use(errorLogger); // логгер ошибок
 
-// app.use(errors()); // обработчик ошибок celebrate
+app.use(errors()); // обработчик ошибок celebrate
 
-app.use(errorHandler);
+// app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Ссылка на сервер: ${PORT}`);
