@@ -6,7 +6,7 @@ const {
 const auth = require("../middlewares/auth");
 
 router.get("/", auth, getMovies); // +
-router.post("/", auth, postMovieValidation, postMovies); // +
+router.post("/", postMovieValidation, postMovies); // +
 router.delete("/:movieId", auth, moviesIdValidation, deleteMovies); // +
 
 module.exports = router;
