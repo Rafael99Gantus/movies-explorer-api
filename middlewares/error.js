@@ -51,7 +51,7 @@ const errorHandler = (err, req, res, next) => {
       .json({ message: ERROR_400 });
   }
   return res.status(http2.constants.HTTP_STATUS_INTERNAL_SERVER_ERROR)
-    .send({ message: ERROR_500 });
+    .send({ message: err });
 };
 
 module.exports = errorHandler;
