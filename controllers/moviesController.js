@@ -42,8 +42,24 @@ module.exports.deleteMovies = async (req, res, next) => {
 // };
 
 module.exports.postMovies = async (req, res, next) => {
-  try {
-    const {
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+    owner,
+  } = req.body;
+  // const owner = req.user.userId;
+  console.log(owner);
+  Movies
+    .create({
       country,
       director,
       duration,
@@ -56,29 +72,9 @@ module.exports.postMovies = async (req, res, next) => {
       thumbnail,
       movieId,
       owner,
-    } = req.body;
-    // const owner = req.user.userId;
-    console.log(owner);
-    Movies
-      .create({
-        country,
-        director,
-        duration,
-        year,
-        description,
-        image,
-        trailerLink,
-        nameRU,
-        nameEN,
-        thumbnail,
-        movieId,
-        owner,
-      })
-      .then((movie) => res.status(http2.constants.HTTP_STATUS_CREATED).send(movie))
-      .catch((err) => {
-        next(err);
-      });
-  } catch (err) {
-    next(err);
-  }
+    })
+    .then((movie) => res.status(http2.constants.HTTP_STATUS_CREATED).send(movie))
+    .catch((err) => {
+      next(err);
+    });
 };
