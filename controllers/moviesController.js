@@ -28,7 +28,7 @@ module.exports.deleteMovies = async (req, res, next) => {
   try {
     const { movieId } = req.params;
     console.log(req.params);
-    await Movies.deleteOne(movieId).orFail(() => new NotFoundError(`${ERROR_404}`));
+    await Movies.deleteOne({ movieId }).orFail(() => new NotFoundError(`${ERROR_404}`));
     res.status(http2.constants.HTTP_STATUS_OK).json(movieId);
   } catch (err) {
     next(err);
